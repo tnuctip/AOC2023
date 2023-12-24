@@ -2,7 +2,6 @@
 # vi:ai:sw=4 ts=4 et
 
 from collections.abc import Iterable
-import operator
 import re
 import sys
 from typing import Any, Dict, List, Optional, Tuple
@@ -15,7 +14,7 @@ class Game:
         self.id = int(head.split(" ")[1])
         self.maxbrg = Game.maxima(body)
 
-        # print(f"{line} -> max:{self.maxbrg}")
+        print(f"{line} -> max:{self.maxbrg}")
 
     @staticmethod
     def search(name: str, sample: str) -> int:
@@ -64,8 +63,8 @@ def filterGames(
 
 def solve(blue: int, red: int, green: int):
     with open(sys.argv[1], "r") as source:
-        ids = list(filterGames(source, blue, red, green))
-        print(f"{ids=}\n{sum(ids)}")
+        ids = filterGames(source, blue, red, green)
+        print(f"{sum(ids)}")
 
 
 def main():
