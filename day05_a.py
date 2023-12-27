@@ -86,21 +86,15 @@ class MapGraph:
 def walkPath(value: int, path: List[XtoYMap]) -> int:
     for step in path:
         nextvalue = step.transform(value)
-        print(f"{step.source}:{value} -> {step.dest}:{nextvalue}")
+        # print(f"{step.source}:{value} -> {step.dest}:{nextvalue}")
         value = nextvalue
     return value
 
-
-def seedLocations(source: List[str]) -> Iterable[int]:
-    seedline = source[0].split()
-    assert seedline[0] == "seeds:"
-    seeds = [int(s) for s in seedline[1:]]
-
-    ## build the graph
+def loadMapPath(source:str, destination:str, lines: List[str]) -> List[XtoYMap]:
     xys: List[XtoYMap] = []
     xy: Optional[XtoYMap] = None
 
-    for line in source[1:]:
+    for line in lines:
         line = line.strip()
         if len(line):
             if line.endswith(" map:"):
@@ -112,8 +106,17 @@ def seedLocations(source: List[str]) -> Iterable[int]:
             xy.addRange(line)
 
     graph = MapGraph(xys)
-    path = graph.findPath("seed", "location")
-    print(f"path {[(s.source, s.dest) for s in path]}")
+    path = graph.findPath(source, destination)
+    # print(f"path {[(s.source, s.dest) for s in path]}")
+    return path
+
+def seedLocations(source: List[str]) -> Iterable[int]:
+    seedline = source[0].split()
+    assert seedline[0] == "seeds:"
+    seeds = [int(s) for s in seedline[1:]]
+
+    ## build the graph
+    path = loadMapPath("seed", "location", source[1:])
 
     locations = [walkPath(seed, path) for seed in seeds]
     return locations
