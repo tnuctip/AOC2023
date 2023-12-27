@@ -8,8 +8,7 @@ import re
 import sys
 from typing import Dict, List, Set, Tuple
 
-
-def scoreCard(line: str) -> int:
+def matchCard(line: str) -> int:
     name, numbers = line.split(":")
     winstr, actstr = numbers.split("|")
 
@@ -18,8 +17,13 @@ def scoreCard(line: str) -> int:
 
     matched = winning & actual
 
-    if len(matched) > 0:
-        return 2 ** (len(matched) - 1)
+    return len(matched)
+
+def scoreCard(line: str) -> int:
+    nmatched = matchCard(line)
+
+    if nmatched > 0:
+        return 2 ** (nmatched - 1)
 
     return 0
 
