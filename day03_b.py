@@ -40,11 +40,11 @@ def gearRatios(source: Iterable[str]) -> int:
         for start, end, sym in matchpos(line, sympat):
             if sym == "*":
                 symbols.append((start, lineno))
-                print(f"gear at {start},{lineno}")
+                #print(f"gear at {start},{lineno}")
 
         for start, end, numstr in matchpos(line, numpat):
             numbers.append((start, end, lineno, int(numstr)))
-            print(f"number {numstr} at ({start}-{end}),{lineno}")
+            #print(f"number {numstr} at ({start}-{end}),{lineno}")
 
     # now find all the symbols adjacent to exactly two numbers
     gears: List[int] = []
@@ -56,7 +56,7 @@ def gearRatios(source: Iterable[str]) -> int:
                 found.append(num)
 
         if len(found) == 2:
-            print(f"found exactly two numbers adjacent to {sxx},{syy}: {found}")
+            #print(f"found exactly two numbers adjacent to {sxx},{syy}: {found}")
             gears.append(found[0] * found[1])
 
     return sum(gears)
