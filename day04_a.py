@@ -1,8 +1,6 @@
 #!/bin/env python3
 # vi:ai:sw=4 ts=4 et
 
-from day03_a import matchpos
-
 from collections.abc import Iterable
 import re
 import sys

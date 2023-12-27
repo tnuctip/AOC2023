@@ -86,6 +86,7 @@ class MapGraph:
 def walkPath(value: int, path: List[XtoYMap]) -> int:
     for step in path:
         nextvalue = step.transform(value)
+        print(f"{step.source}:{value} -> {step.dest}:{nextvalue}")
         value = nextvalue
     return value
 
@@ -112,6 +113,7 @@ def seedLocations(source: List[str]) -> Iterable[int]:
 
     graph = MapGraph(xys)
     path = graph.findPath("seed", "location")
+    print(f"path {[(s.source, s.dest) for s in path]}")
 
     locations = [walkPath(seed, path) for seed in seeds]
     return locations
