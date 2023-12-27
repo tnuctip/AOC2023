@@ -4,7 +4,7 @@
 from collections.abc import Iterable
 import re
 import sys
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Set, Tuple
 
 
 def matchpos(line: str, pattern: re.Pattern) -> Iterable[Tuple[int, int, str]]:
@@ -13,7 +13,7 @@ def matchpos(line: str, pattern: re.Pattern) -> Iterable[Tuple[int, int, str]]:
         yield (m.start(), m.end(), m.group())
 
 
-def partnums(source: Iterable[str]):
+def partnums(source: Iterable[str]) -> int:
     """this is eager, ie, we find all numeral sequences and symbols first"""
     # find positions of every symbol and number
     numpat = re.compile("\d+")
@@ -26,11 +26,11 @@ def partnums(source: Iterable[str]):
         line = line.strip()
         for start, end, sym in matchpos(line, sympat):
             symbols.add((start, lineno))
-            print(f"symbol {sym} at {start},{lineno}")
+            #print(f"symbol {sym} at {start},{lineno}")
 
         for start, end, numstr in matchpos(line, numpat):
             numbers.append((start, end, lineno, int(numstr)))
-            print(f"number {numstr} at ({start}-{end}),{lineno}")
+            #print(f"number {numstr} at ({start}-{end}),{lineno}")
 
     # now extract all the numbers adjacent to a symbol
     partnums: List[int] = []
@@ -39,7 +39,7 @@ def partnums(source: Iterable[str]):
         if (xbegin - 1, yy) in symbols or (xend, yy) in symbols:
             # same line -- $123$
             partnums.append(num)
-            print(f"{num} is on the same line as a symbol")
+            #print(f"{num} is on the same line as a symbol")
         else:
             # adjacent line:
             # $....
@@ -47,11 +47,11 @@ def partnums(source: Iterable[str]):
             # ....$
             for xx in range(xbegin - 1, xend + 1):
                 if (xx, yy - 1) in symbols:
-                    print(f"{num} is adjacent to the symbol at {xx},{yy-1}")
+                    #print(f"{num} is adjacent to the symbol at {xx},{yy-1}")
                     partnums.append(num)
                     break
                 elif (xx, yy + 1) in symbols:
-                    print(f"{num} is adjacent to the symbol at {xx},{yy+1}")
+                    #print(f"{num} is adjacent to the symbol at {xx},{yy+1}")
                     partnums.append(num)
                     break
 
