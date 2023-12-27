@@ -3,11 +3,12 @@
 import json
 from typing import Any, Dict, List, Optional, Tuple
 
+
 class Trie:
     def __init__(self, key: Optional[str] = None, value: Optional[Any] = None):
         self.key = None if key is None or len(key) == 0 else key
         self.value = value
-        self.children: Dict[str,Trie] = {}
+        self.children: Dict[str, Trie] = {}
 
     def add(self, key: str, value: Any):
         # attach a value to this node
@@ -65,22 +66,24 @@ class Trie:
     def __str__(self) -> str:
         return json.dumps(self.toJSON())
 
+
 class Iterator:
-    def __init__(self, root:Trie):
+    def __init__(self, root: Trie):
         self.root = root
-        self.prefix = []
+        self.prefix: List[str] = []
         self.cursor: Trie = root
         self.index: Optional[int] = 0 if root.key else None
 
-    def advance(self, token:str) -> bool:
-        if self.index is not None: # check compressed prefix
+    def advance(self, token: str) -> bool:
+        if self.index is not None:  # check compressed prefix
+            assert self.cursor.key is not None  # key and index are linked
             if self.index == len(self.cursor.key):
-                return False # dropped off the end
+                return False  # dropped off the end
             if self.cursor.key[self.index] == token:
                 self.index += 1
                 self.prefix.append(token)
                 return True
-            else: # compressed prefix didn't match
+            else:  # compressed prefix didn't match
                 self.index = None
 
         if token in self.cursor.children:
@@ -93,27 +96,29 @@ class Iterator:
         return False
 
     def value(self) -> Optional[Any]:
-        if self.index is not None and self.index < len(self.cursor.key):
-            return None
+        if self.index is not None:
+            assert self.cursor.key is not None  # key and index are linked
+            if self.index < len(self.cursor.key):
+                return None
         return self.cursor.value
 
     def key(self) -> str:
-        return ''.join(self.prefix)
-        
+        return "".join(self.prefix)
+
 
 class Searcher:
-    def __init__(self, root:Trie):
+    def __init__(self, root: Trie):
         self.root = root
-        self.echelon = []
+        self.echelon: List[Iterator] = []
 
-    def advance(self, token:str):
+    def advance(self, token: str):
         next_echelon = [i for i in self.echelon if i.advance(token)]
         begin = Iterator(self.root)
         if begin.advance(token):
             next_echelon.append(begin)
         self.echelon = next_echelon
 
-    def value(self) -> Optional[Tuple[str,Any]]:
+    def value(self) -> Optional[Tuple[str, Any]]:
         for i in self.echelon:
             ov = i.value()
             if ov is not None:
