@@ -19,7 +19,7 @@ class MapGraph:
         self.nodes: Dict[str, Tuple[str, str]] = {}
 
     def add(self, line: str):
-        m = re.match("([A-Z]{3}) = \(([A-Z]{3}), ([A-Z]{3})\)", line)
+        m = re.match("(\w{3}) = \((\w{3}), (\w{3})\)", line)
         assert m is not None
         node = m.group(1)
         left = m.group(2)
@@ -31,17 +31,11 @@ class MapGraph:
             self.m = m
             self.current = current
 
-        def advance(self, direction: str):
+        def advance(self, direction: int):
             curnode = self.m.nodes[self.current]
-            nextnode: str = "???"
-            if direction == "L":
-                nextnode = curnode[0]
-            elif direction == "R":
-                nextnode = curnode[1]
-            else:
-                assert direction in "LR"
+            nextnode = curnode[direction]
 
-            print(f"{self.current} : {direction} {curnode} -> {nextnode}")
+            # print(f"{self.current} : {direction} {curnode} -> {nextnode}")
             self.current = nextnode
 
         def __eq__(self, other) -> bool:
@@ -68,9 +62,9 @@ def loadMapGraph(source: Iterable[str]) -> MapGraph:
     return result
 
 
-def main(source: Iterable[str]):
+def main(source):
     lines = source.readlines()
-    directions = lines[0].strip()
+    directions = ['LR'.index(d) for d in lines[0].strip()]
 
     graph = loadMapGraph(lines[2:])
 
