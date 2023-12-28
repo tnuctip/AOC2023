@@ -43,7 +43,6 @@ def naivesolver(time:int, winner:int) -> int:
 ##
 ## (see day05-a-example-plot.svg to visualize the intercepts)
 ##
-## ... currently full of off-by-one errors ...
 def quadsolver(time:int, winner:int) -> int:
     """
     >>> quadsolver(7, 9)
@@ -64,7 +63,7 @@ def quadsolver(time:int, winner:int) -> int:
 
     sq = math.sqrt(discriminant)
     roots = ((-b + sq)/(2*a), (-b -sq)/(2*a))
-    return math.floor(max(roots)) - math.ceil(min(roots))
+    return math.ceil(max(roots)) - math.ceil(min(roots)+0.0001)
 
 def solve(times: List[int], distances: List[int]) -> int:
     results: List[int] = [naivesolver(time, distance) for time, distance in zip(times, distances)]
