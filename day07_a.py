@@ -57,7 +57,7 @@ class Hand:
         key = list(reversed(sorted(counts.values())))
         return Hand.TYPES.index(key)
 
-    def __init__(self, cards: str, bid:int):
+    def __init__(self, cards: str, bid: int = 0):
         self.cards: str = cards
         self.type: int = Hand.getType(cards)
         self.bid = bid
@@ -106,19 +106,21 @@ class Hand:
                 return False
         return False
 
-def loadHands(source:Iterable[str]) -> List[Hand]:
+
+def loadHands(source: Iterable[str]) -> List[Hand]:
     result: List[Hand] = []
     for line in source:
-        cards,bid = line.split()
+        cards, bid = line.split()
         result.append(Hand(cards, int(bid)))
     return result
+
 
 def main():
     with open(sys.argv[1], "r") as source:
         hands = loadHands(source)
 
         ordered = enumerate(sorted(hands))
-        scored = [h.bid * (1+e) for e,h in ordered]
+        scored = [h.bid * (1 + e) for e, h in ordered]
 
         print(f"{sum(scored)}")
 
