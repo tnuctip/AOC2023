@@ -1,0 +1,87 @@
+#!/bin/env python3
+# vi:ai:sw=4 ts=4 et
+
+from __future__ import annotations
+
+from collections import defaultdict
+from collections.abc import Iterable
+import functools
+import itertools
+import math
+import operator
+import re
+import sys
+from typing import Dict, List, Optional, Set, Tuple
+
+
+class MapGraph:
+    def __init__(self):
+        self.nodes: Dict[str, Tuple[str, str]] = {}
+
+    def add(self, line: str):
+        m = re.match("([A-Z]{3}) = \(([A-Z]{3}), ([A-Z]{3})\)", line)
+        assert m is not None
+        node = m.group(1)
+        left = m.group(2)
+        right = m.group(3)
+        self.nodes[node] = (left, right)
+
+    class Iter:
+        def __init__(self, m: MapGraph, current: str):
+            self.m = m
+            self.current = current
+
+        def advance(self, direction: str):
+            curnode = self.m.nodes[self.current]
+            nextnode: str = "???"
+            if direction == "L":
+                nextnode = curnode[0]
+            elif direction == "R":
+                nextnode = curnode[1]
+            else:
+                assert direction in "LR"
+
+            print(f"{self.current} : {direction} {curnode} -> {nextnode}")
+            self.current = nextnode
+
+        def __eq__(self, other) -> bool:
+            if not isinstance(other, MapGraph.Iter):
+                return NotImplemented
+            return self.current == other.current
+
+    def begin(self):
+        assert "AAA" in self.nodes
+        return MapGraph.Iter(self, "AAA")
+
+    @functools.cache
+    def end(self):
+        assert "ZZZ" in self.nodes
+        return MapGraph.Iter(self, "ZZZ")
+
+
+def loadMapGraph(source: Iterable[str]) -> MapGraph:
+    result = MapGraph()
+
+    for line in source:
+        result.add(line)
+
+    return result
+
+
+def main(source: Iterable[str]):
+    lines = source.readlines()
+    directions = lines[0].strip()
+
+    graph = loadMapGraph(lines[2:])
+
+    node = graph.begin()
+    for step, direction in enumerate(itertools.cycle(directions)):
+        if node == graph.end():
+            print(f"{step}")
+            return
+        node.advance(direction)
+
+
+if __name__ == "__main__":
+    with open(sys.argv[1], "r") as source:
+        main(source)
