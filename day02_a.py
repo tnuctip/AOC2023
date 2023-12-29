@@ -4,7 +4,7 @@
 from collections.abc import Iterable
 import re
 import sys
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Tuple
 
 
 class Game:
@@ -18,7 +18,7 @@ class Game:
 
     @staticmethod
     def search(name: str, sample: str) -> int:
-        m = re.search(f"(\d*) {name}", sample)
+        m = re.search(rf"(\d*) {name}", sample)
         if m:
             return int(m.group(1))
         else:

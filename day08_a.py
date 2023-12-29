@@ -3,15 +3,12 @@
 
 from __future__ import annotations
 
-from collections import defaultdict
 from collections.abc import Iterable
 import functools
 import itertools
-import math
-import operator
 import re
 import sys
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, Tuple
 
 
 class MapGraph:
@@ -19,7 +16,7 @@ class MapGraph:
         self.nodes: Dict[str, Tuple[str, str]] = {}
 
     def add(self, line: str):
-        m = re.match("(\w{3}) = \((\w{3}), (\w{3})\)", line)
+        m = re.match(r"(\w{3}) = \((\w{3}), (\w{3})\)", line)
         assert m is not None
         node = m.group(1)
         left = m.group(2)
@@ -64,7 +61,7 @@ def loadMapGraph(source: Iterable[str]) -> MapGraph:
 
 def main(source):
     lines = source.readlines()
-    directions = ['LR'.index(d) for d in lines[0].strip()]
+    directions = ["LR".index(d) for d in lines[0].strip()]
 
     graph = loadMapGraph(lines[2:])
 

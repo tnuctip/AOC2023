@@ -6,11 +6,8 @@ from __future__ import annotations
 from collections import defaultdict
 from collections.abc import Iterable
 import functools
-import math
-import operator
-import re
 import sys
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List
 
 
 @functools.total_ordering

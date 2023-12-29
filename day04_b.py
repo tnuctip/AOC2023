@@ -5,9 +5,8 @@ from day04_a import matchCard
 
 from collections import defaultdict
 from collections.abc import Iterable
-import re
 import sys
-from typing import Dict, List, Set, Tuple
+from typing import Dict
 
 
 def countCards(source: Iterable[str]) -> int:

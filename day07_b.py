@@ -6,11 +6,8 @@ from __future__ import annotations
 from collections import defaultdict
 from collections.abc import Iterable
 import functools
-import math
-import operator
-import re
 import sys
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List
 
 
 @functools.total_ordering
@@ -42,12 +39,12 @@ class Hand:
         """
         # replace the wildcards
         njokers: int = 0
-        if 'J' in counts:
-           njokers = counts['J']
-           del counts['J']
-           # degenerate case
-           if njokers == 5:
-               return [5]
+        if "J" in counts:
+            njokers = counts["J"]
+            del counts["J"]
+            # degenerate case
+            if njokers == 5:
+                return [5]
 
         # key without jokers
         key = list(reversed(sorted(counts.values())))

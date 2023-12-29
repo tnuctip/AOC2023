@@ -2,9 +2,9 @@
 # vi:ai:sw=4 ts=4 et
 
 from collections.abc import Iterable
-import re
 import sys
-from typing import Dict, List, Set, Tuple
+from typing import Set
+
 
 def matchCard(line: str) -> int:
     name, numbers = line.split(":")
@@ -16,6 +16,7 @@ def matchCard(line: str) -> int:
     matched = winning & actual
 
     return len(matched)
+
 
 def scoreCard(line: str) -> int:
     nmatched = matchCard(line)

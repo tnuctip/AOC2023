@@ -5,7 +5,7 @@ from trie_01 import Trie, Searcher
 
 import sys
 
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 
 class Classifier:

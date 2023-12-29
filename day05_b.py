@@ -4,12 +4,9 @@ from __future__ import annotations
 
 from day05_a import loadMapPath, XtoYMap
 
-from collections import defaultdict
-from collections.abc import Generator, Iterable
-import itertools
-import re
+from collections.abc import Iterable
 import sys
-from typing import Dict, List, Optional, Set, Tuple
+from typing import List, Optional
 
 
 class Interval:
@@ -121,7 +118,7 @@ def seedLocations(source: List[str]) -> Iterable[int]:
     seedPairs = zip(seedraws[0::2], seedraws[1::2])
     seeds = [Interval(s[0], s[0] + s[1]) for s in seedPairs]
 
-    ## build the graph
+    # build the graph
     path = loadMapPath("seed", "location", source[1:])
 
     locations = seeds

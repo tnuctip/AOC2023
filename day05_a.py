@@ -5,7 +5,7 @@ from collections import defaultdict
 from collections.abc import Iterable
 import re
 import sys
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Optional, Tuple
 
 
 class XtoYMap:
@@ -76,8 +76,8 @@ class MapGraph:
             try:
                 following = self.findPath(step.dest, destination)
                 paths.append([step] + following)
-            except:
-                pass
+            except RuntimeError:
+                pass  # one dead end is not a problem
 
         path = min(paths, key=len)
         return path
@@ -90,7 +90,8 @@ def walkPath(value: int, path: List[XtoYMap]) -> int:
         value = nextvalue
     return value
 
-def loadMapPath(source:str, destination:str, lines: List[str]) -> List[XtoYMap]:
+
+def loadMapPath(source: str, destination: str, lines: List[str]) -> List[XtoYMap]:
     xys: List[XtoYMap] = []
     xy: Optional[XtoYMap] = None
 
@@ -110,12 +111,13 @@ def loadMapPath(source:str, destination:str, lines: List[str]) -> List[XtoYMap]:
     # print(f"path {[(s.source, s.dest) for s in path]}")
     return path
 
+
 def seedLocations(source: List[str]) -> Iterable[int]:
     seedline = source[0].split()
     assert seedline[0] == "seeds:"
     seeds = [int(s) for s in seedline[1:]]
 
-    ## build the graph
+    # build the graph
     path = loadMapPath("seed", "location", source[1:])
 
     locations = [walkPath(seed, path) for seed in seeds]
