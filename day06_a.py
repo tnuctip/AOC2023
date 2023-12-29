@@ -41,7 +41,7 @@ def naivesolver(time:int, winner:int) -> int:
 ## so for a given previously-winning distance D, we want the roots of
 ## y = Bx - x^2 - D
 ##
-## (see day05-a-example-plot.svg to visualize the intercepts)
+## (see day06-quadratic.svg to visualize the intercepts)
 ##
 def quadsolver(time:int, winner:int) -> int:
     """
